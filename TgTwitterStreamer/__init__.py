@@ -31,11 +31,10 @@ REPO_LINK = "https://github.com/New-dev0/TgTwitterStreamer"
 
 
 CUSTOM_FORMAT = """
-🎊 <b><a href='{SENDER_PROFILE}'>{SENDER}</a></b> :
+🔶 <b><a href='{SENDER_PROFILE}'>{SENDER}</a></b> :
 
-🍿 {TWEET_TEXT}
+➡️ {TWEET_TEXT}
 
-• Powered by <b><a href="{_REPO_LINK}">TgTwitterStreamer</a></b>
 """
 
 

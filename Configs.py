@@ -3,24 +3,24 @@ from decouple import config
 
 class Var:
     # Telegram's API ID
-    API_ID = config("API_ID", default=6)
+    API_ID = config("API_ID", '13365810')
     # Telegram's API HASH
-    API_HASH = config("API_HASH", default="eb06d4abfb49dc3eeb1aeb98ae0f581e")
+    API_HASH = config("API_HASH", 'dc244bc5d3696c478a54f74d666bec20')
     # Telegram Bot's token
-    BOT_TOKEN = config("BOT_TOKEN", None)
+    BOT_TOKEN = config("BOT_TOKEN", '5048252615:AAG0zqe6jcKeFSNZHwWZWeBdJS10maU0hMs')
 
     # Twitter Vars
-    CONSUMER_KEY = config("CONSUMER_KEY", None)
-    CONSUMER_SECRET = config("CONSUMER_SECRET", None)
-    ACCESS_TOKEN = config("ACCESS_TOKEN", None)
-    ACCESS_TOKEN_SECRET = config("ACCESS_TOKEN_SECRET", None)
+    CONSUMER_KEY = config("CONSUMER_KEY", 'PePMO0Yj4megfEMyWp4b5lNUW')
+    CONSUMER_SECRET = config("CONSUMER_SECRET", 'fe9xex9IVY3dqRNXFGFfckRE8Jy64COZim1V2e3ViZN1x5nks4')
+    ACCESS_TOKEN = config("ACCESS_TOKEN", '142013277-aVxNzMICaWDWp9IIVFdadPPwHJ7DBEknh3zVgjK0')
+    ACCESS_TOKEN_SECRET = config("ACCESS_TOKEN_SECRET", 'GUNxnAWoT5urOoOBQ1UVDcF8v3GW4hIW9rH72P97vy3aP')
 
     # Telegram Chat id(s), where to send Tweets
-    TO_CHAT: str = config("TO_CHAT", None)
+    TO_CHAT: str = config("TO_CHAT", '-1001654428545')
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
-    TRACK_USERS = config("TRACK_USERS", None)
+    TRACK_USERS = config("TRACK_USERS", '@DDNewslive')
     # TRACK_WORDS: To filter Tweets by word
     # Should be seperated by "|"
     TRACK_WORDS = config("TRACK_WORDS", None)
