@@ -1,3 +1,4 @@
+*.pem
 *.log
 __pycache__
 *.session
