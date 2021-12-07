@@ -43,7 +43,7 @@ class Var:
     # Whether should take messages, which are reply to other post.
     TAKE_REPLIES = config("TAKE_REPLIES", default=False, cast=bool)
     # Whether to Take Retweets or not.
-    TAKE_RETWEETS = config("TAKE_RETWEETS", default=False, cast=bool)
+    TAKE_RETWEETS = config("TAKE_RETWEETS", True, cast=bool)
     # Whether to take replies on post of user filled in TRACK_USERS.
     TAKE_OTHERS_REPLY = config("TAKE_OTHERS_REPLY", default=False, cast=bool)
 

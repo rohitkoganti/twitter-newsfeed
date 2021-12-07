@@ -121,8 +121,9 @@ class TgStreamer(AsyncStream):
         async with aiohttp.ClientSession() as ses:
             for on in spli:
                 if "t.co/" in on:
-                    async with ses.get(on) as out:
-                        text = text.replace(on, str(out.url))
+                    link = "https://t.co/" + on.split("t.co/")[1] #Making sure the link to be decoded is legit
+                    async with ses.get(link) as out:
+                        text = text.replace(link, str(out.url))
 
         # Twitter Repeats Media Url in Text.
         # So, Its somewhere necessary to seperate out links.
