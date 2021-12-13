@@ -10,7 +10,7 @@ from telethon.tl.custom import Button
 from tweepy.asynchronous import AsyncStream
 from tweepy.errors import Unauthorized
 
-from . import Twitter, Client, REPO_LINK, Var, LOGGER
+from . import Twitter, Client, REPO_LINK, Var, LOGGER, mycol
 
 
 LOGGER.info("<<--- Setting Up Bot ! --->>")
@@ -139,7 +139,7 @@ class TgStreamer(AsyncStream):
                 if len(spli_) >= 2 and spli_[-2] in ["photo", "video"]:
                     text = text.replace(word, "")
 
-        text = Var.CUSTOM_TEXT.format(
+        final_text = Var.CUSTOM_TEXT.format(
             SENDER=user["name"],
             SENDER_USERNAME="@" + username,
             TWEET_TEXT=text,
@@ -161,19 +161,24 @@ class TgStreamer(AsyncStream):
         _photos = pic[0] if (pic and is_pic_alone) else pic
         if _photos == []:
             _photos = None
+
+        ids = []
         for chat in Var.TO_CHAT:
             try:
-                await Client.send_message(
+                message1 = await Client.send_message(
                     chat,
-                    text if (is_pic_alone or Var.DISABLE_BUTTON) else None,
+                    final_text if (is_pic_alone or Var.DISABLE_BUTTON) else None,
                     link_preview=False,
                     file=_photos,
                     buttons=button,
                 )
-                if not is_pic_alone and text and button:
-                    await Client.send_message(
-                        chat, text, link_preview=False, buttons=button
+                ids.append(message1.id)
+                if not is_pic_alone and final_text and button:
+                    message2 = await Client.send_message(
+                        chat, final_text, link_preview=False, buttons=button
                     )
+                    ids.append(message2.id)
+
             except Exception as er:
                 LOGGER.exception(er)
         if Var.AUTO_LIKE:
@@ -187,6 +192,13 @@ class TgStreamer(AsyncStream):
             except Exception as er:
                 LOGGER.exception(er)
 
+        save_tweet = {"tweet_text": text,
+                    "tweet_link": TWEET_LINK,
+                    "message_ids": ids
+                    }
+        LOGGER.info(save_tweet)
+        mycol.insert_one(save_tweet)
+
     async def on_delete(self, status_id, user_id):
         #Search for the tweet with a tweet link that matches the status_id and user_id
         #print(status_id, user_id)
@@ -196,14 +208,13 @@ class TgStreamer(AsyncStream):
 
         #search for tweet link in db
         
-
         #get associated message ids
 
         #delete messages iteratively
-            try:
-                await Client.delete_messages(Var.TO_CHAT, message_id)
-            except Exception as er:
-                LOGGER.exception(er)
+        try:
+            await Client.delete_messages(Var.TO_CHAT, message_id)
+        except Exception as er:
+            LOGGER.exception(er)
 
     async def on_request_error(self, status_code):
         LOGGER.error(f"Stream Encountered HTTP Error: {status_code}")

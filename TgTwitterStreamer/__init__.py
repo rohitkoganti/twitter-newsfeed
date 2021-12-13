@@ -6,6 +6,7 @@ import logging
 from Configs import Var
 from telethon import TelegramClient
 from tweepy import API, OAuthHandler
+import pymongo
 
 LOGGER = logging.getLogger("TgTwitterStreamer")
 LOGGER.setLevel(level=logging.INFO)
@@ -13,6 +14,12 @@ logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s",
     level=logging.INFO
 )
+
+# Start Mongodb
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["tweetstreamdb"]
+mycol = mydb["tweets"]
+
 
 # Tweepy's Client
 
