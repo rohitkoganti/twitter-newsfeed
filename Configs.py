@@ -20,7 +20,7 @@ class Var:
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
-    TRACK_USERS = config("TRACK_USERS", 'chevilojoreega')
+    TRACK_USERS = config("TRACK_USERS", 'DDNewslive')
     # TRACK_WORDS: To filter Tweets by word
     # Should be seperated by "|"
     TRACK_WORDS = config("TRACK_WORDS", None)
@@ -41,7 +41,7 @@ class Var:
     DISABLE_START = config("DISABLE_START", default=False, cast=bool)
 
     # Whether should take messages, which are reply to other post.
-    TAKE_REPLIES = config("TAKE_REPLIES", default=False, cast=bool)
+    TAKE_REPLIES = config("TAKE_REPLIES", True, cast=bool)
     # Whether to Take Retweets or not.
     TAKE_RETWEETS = config("TAKE_RETWEETS", True, cast=bool)
     # Whether to take replies on post of user filled in TRACK_USERS.

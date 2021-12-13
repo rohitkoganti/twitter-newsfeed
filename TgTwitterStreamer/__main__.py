@@ -207,14 +207,20 @@ class TgStreamer(AsyncStream):
         print(TWEET_LINK)
 
         #search for tweet link in db
-        
-        #get associated message ids
+        match = mycol.find_one({'tweet_link':TWEET_LINK})
+        LOGGER.info(match)
 
-        #delete messages iteratively
-        try:
-            await Client.delete_messages(Var.TO_CHAT, message_id)
-        except Exception as er:
-            LOGGER.exception(er)
+        #get associated message ids
+        ids = []
+        if match is not None:
+            ids = match['message_ids']
+
+        #delete messages iteratively. Only one chat is taken here, may add more.
+        for id in ids:
+            try:
+                await Client.delete_messages(Var.TO_CHAT[0], str(id))
+            except Exception as er:
+                LOGGER.exception(er)
 
     async def on_request_error(self, status_code):
         LOGGER.error(f"Stream Encountered HTTP Error: {status_code}")
