@@ -100,11 +100,15 @@ class TgStreamer(AsyncStream):
             pic.append(pik)
         if _entities and _entities.get("hashtags"):
             hashtags = "".join(f"#{a['text']} " for a in _entities["hashtags"])
-        content = tweet.get("extended_tweet", {}).get("full_text")
 
         username = user["screen_name"]
         sender_url = "https://twitter.com/" + username
         TWEET_LINK = f"{sender_url}/status/{tweet['id']}"
+
+        if "retweeted_status" in tweet:
+            content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("retweeted_status",{}).get("extended_tweet",{}).get("full_text")
+        else:
+            content = tweet.get("extended_tweet", {}).get("full_text")
 
         if content and (len(content) < 1000):
             text = content
@@ -180,6 +184,24 @@ class TgStreamer(AsyncStream):
         if Var.AUTO_RETWEET:
             try:
                 Twitter.retweet(id=tweet["id"])
+            except Exception as er:
+                LOGGER.exception(er)
+
+    async def on_delete(self, status_id, user_id):
+        #Search for the tweet with a tweet link that matches the status_id and user_id
+        #print(status_id, user_id)
+        sender_url = "https://twitter.com/" + Var.TRACK_USERS.split(" ")[0]
+        TWEET_LINK = f"{sender_url}/status/{status_id}"
+        print(TWEET_LINK)
+
+        #search for tweet link in db
+        
+
+        #get associated message ids
+
+        #delete messages iteratively
+            try:
+                await Client.delete_messages(Var.TO_CHAT, message_id)
             except Exception as er:
                 LOGGER.exception(er)
 
