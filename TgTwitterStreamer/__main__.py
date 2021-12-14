@@ -62,7 +62,7 @@ class TgStreamer(AsyncStream):
 
     async def on_status(self, status):
         tweet = status._json
-        #LOGGER.info(tweet)
+        LOGGER.info(tweet)
         user = tweet["user"]
 
         if (
@@ -106,8 +106,12 @@ class TgStreamer(AsyncStream):
         sender_url = "https://twitter.com/" + username
         TWEET_LINK = f"{sender_url}/status/{tweet['id']}"
 
-        if "retweeted_status" in tweet:
+        if "retweeted_status" in tweet and tweet["is_quote_status"] is True:
+            content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("retweeted_status",{}).get("text") + '\n' + tweet.get("retweeted_status",{}).get("quoted_status_permalink",{}).get("expanded")
+        elif "retweeted_status" in tweet:
             content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("retweeted_status",{}).get("extended_tweet",{}).get("full_text")
+        elif tweet["is_quote_status"] is True:
+            content = 'QT @' + tweet.get("quoted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("text",{}) + '\n' + tweet.get("quoted_status_permalink",{}).get("expanded")
         else:
             content = tweet.get("extended_tweet", {}).get("full_text")
 
