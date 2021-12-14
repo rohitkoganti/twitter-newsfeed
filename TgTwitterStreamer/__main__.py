@@ -62,6 +62,7 @@ class TgStreamer(AsyncStream):
 
     async def on_status(self, status):
         tweet = status._json
+        #LOGGER.info(tweet)
         user = tweet["user"]
 
         if (
@@ -162,7 +163,6 @@ class TgStreamer(AsyncStream):
         if _photos == []:
             _photos = None
 
-        ids = []
         for chat in Var.TO_CHAT:
             try:
                 message1 = await Client.send_message(
@@ -172,15 +172,13 @@ class TgStreamer(AsyncStream):
                     file=_photos,
                     buttons=button,
                 )
-                ids.append(message1.id)
                 if not is_pic_alone and final_text and button:
                     message2 = await Client.send_message(
                         chat, final_text, link_preview=False, buttons=button
                     )
-                    ids.append(message2.id)
-
             except Exception as er:
                 LOGGER.exception(er)
+
         if Var.AUTO_LIKE:
             try:
                 Twitter.create_favorite(id=tweet["id"])
@@ -191,6 +189,16 @@ class TgStreamer(AsyncStream):
                 Twitter.retweet(id=tweet["id"])
             except Exception as er:
                 LOGGER.exception(er)
+        # Saving the tweet in the db
+        ids = []
+        if isinstance(message1, list):
+            for m in message1:
+                ids.append(m.id)
+        else:
+            ids.append(message1.id)
+
+        if "message2" in locals():
+            ids.append(message2.id)
 
         save_tweet = {"tweet_text": text,
                     "tweet_link": TWEET_LINK,
