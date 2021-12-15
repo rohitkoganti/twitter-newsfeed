@@ -197,11 +197,12 @@ class TgStreamer(AsyncStream):
                 LOGGER.exception(er)
         # Saving the tweet in the db
         ids = []
-        if "message1" in locals() and isinstance(message1, list):
-            for m in message1:
-                ids.append(m.id)
-        else:
-            ids.append(message1.id)
+        if "message1" in locals():
+            if isinstance(message1, list):
+                for m in message1:
+                    ids.append(m.id)
+            else:
+                ids.append(message1.id)
 
         if "message2" in locals():
             ids.append(message2.id)
