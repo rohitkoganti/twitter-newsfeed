@@ -62,7 +62,7 @@ class TgStreamer(AsyncStream):
 
     async def on_status(self, status):
         tweet = status._json
-        LOGGER.info(tweet)
+        #LOGGER.info(tweet)
         user = tweet["user"]
 
         if (
@@ -176,10 +176,12 @@ class TgStreamer(AsyncStream):
                     file=_photos,
                     buttons=button,
                 )
+                LOGGER.info(message1)
                 if not is_pic_alone and final_text and button:
                     message2 = await Client.send_message(
                         chat, final_text, link_preview=False, buttons=button
                     )
+                    LOGGER.info(message2)
             except Exception as er:
                 LOGGER.exception(er)
 
@@ -195,7 +197,7 @@ class TgStreamer(AsyncStream):
                 LOGGER.exception(er)
         # Saving the tweet in the db
         ids = []
-        if isinstance(message1, list):
+        if "message1" in locals() && isinstance(message1, list):
             for m in message1:
                 ids.append(m.id)
         else:
