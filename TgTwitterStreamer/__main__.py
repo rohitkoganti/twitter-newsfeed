@@ -109,7 +109,7 @@ class TgStreamer(AsyncStream):
         if "retweeted_status" in tweet and tweet["is_quote_status"] is True:
             content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("retweeted_status",{}).get("text") + '\n' + tweet.get("retweeted_status",{}).get("quoted_status_permalink",{}).get("expanded")
         elif "retweeted_status" in tweet:
-            content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("retweeted_status",{}).get("extended_tweet",{}).get("full_text")
+            content = 'RT @' + tweet.get("retweeted_status",{}).get("user",{}).get("screen_name") + ': ' + (tweet.get("retweeted_status",{}).get("extended_tweet",{}).get("full_text") or tweet.get("retweeted_status",{}).get("text"))
         elif tweet["is_quote_status"] is True:
             content = 'QT @' + tweet.get("quoted_status",{}).get("user",{}).get("screen_name") + ': ' + tweet.get("text",{}) + '\n' + tweet.get("quoted_status_permalink",{}).get("expanded")
         else:
