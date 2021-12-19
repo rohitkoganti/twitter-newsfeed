@@ -87,16 +87,25 @@ class TgStreamer(AsyncStream):
             CACHE_USERNAME.append(bot_username)
 
         pic, content, hashtags = [], "", ""
-        _entities = tweet.get("entities", {})
+
+        #Checking for media content in tweet. Checking in RTed tweets too. TBD: Media in QTs
+        if "retweeted_status" in tweet:
+            media_twt = tweet.get("retweeted_status",{})
+        else:
+            media_twt = tweet
+
+        _entities = media_twt.get("entities", {})
         entities = _entities.get("media", [])
-        extended_entities = tweet.get("extended_entities", {}).get("media")
+        extended_entities = media_twt.get("extended_entities", {}).get("media")
         extended_tweet = (
-            tweet.get("extended_tweet", {}).get("entities", {}).get("media")
+            media_twt.get("extended_tweet", {}).get("entities", {}).get("media")
         )
+
         all_urls = set()
         for media in (entities, extended_entities, extended_tweet):
             urls = self.get_urls(media)
             all_urls.update(set(urls))
+        LOGGER.info(all_urls)
         for pik in all_urls:
             pic.append(pik)
         if _entities and _entities.get("hashtags"):
@@ -119,6 +128,7 @@ class TgStreamer(AsyncStream):
             text = content
         else:
             text = tweet["text"]
+        LOGGER.info(text)
 
         if Var.MUST_INCLUDE and Var.MUST_INCLUDE not in text:
             return
