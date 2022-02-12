@@ -160,11 +160,11 @@ class TgStreamer(AsyncStream):
                     text = text.replace(word, "")
 
             # Adding twitter mentions and hashtags in the tweet.
-            if word.startswith("@"):
+            if word.startswith("@") and len(word)>1:
                 twit_mention = '[' + word + '](https://twitter.com/' +  word.split('@')[1] + ')'
                 text = text.replace(word, twit_mention)
 
-            if word.startswith("#"):
+            if word.startswith("#") and len(word)>1:
                 hash = '[' + word + '](https://twitter.com/hashtag/' +  word.split('#')[1] + ')'
                 text = text.replace(word, hash)
 
