@@ -101,11 +101,18 @@ class TgStreamer(AsyncStream):
             media_twt.get("extended_tweet", {}).get("entities", {}).get("media")
         )
 
+        # Getting the urls of the media content and making a unique set
         all_urls = set()
         for media in (entities, extended_entities, extended_tweet):
             urls = self.get_urls(media)
+            #Checking if there's any video. In that case using only that.
+            if any(i.startswith('https://video.twimg.com') for i in urls):
+                all_urls = {next(i for i in urls if i.startswith('https://video.twimg.com'))}
+                break
             all_urls.update(set(urls))
+
         LOGGER.info(all_urls)
+
         for pik in all_urls:
             pic.append(pik)
         if _entities and _entities.get("hashtags"):
@@ -194,6 +201,14 @@ class TgStreamer(AsyncStream):
                     LOGGER.info(message2)
             except Exception as er:
                 LOGGER.exception(er)
+                LOGGER.info("Failed to send the tweet as message on main channel, sending the text on backup channel")
+                backup_message = await Client.send_message(
+                    int(Var.TO_FAILSAFE_CHAT),
+                    final_text,
+                    link_preview = False,
+                    buttons = button,
+                )
+                LOGGER.info(backup_message)
 
         if Var.AUTO_LIKE:
             try:
@@ -221,7 +236,8 @@ class TgStreamer(AsyncStream):
                     "tweet_link": TWEET_LINK,
                     "message_ids": ids
                     }
-        LOGGER.info(save_tweet)
+        LOGGER.info("Saving tweet in DB as: %s \n\n", save_tweet)
+        print('---------------------------------------------------------------------')
         mycol.insert_one(save_tweet)
 
     async def on_delete(self, status_id, user_id):
@@ -229,11 +245,11 @@ class TgStreamer(AsyncStream):
         #print(status_id, user_id)
         sender_url = "https://twitter.com/" + Var.TRACK_USERS.split(" ")[0]
         TWEET_LINK = f"{sender_url}/status/{status_id}"
-        print(TWEET_LINK)
+        LOGGER.info("This tweet was deleted: %s", TWEET_LINK)
 
         #search for tweet link in db
         match = mycol.find_one({'tweet_link':TWEET_LINK})
-        LOGGER.info(match)
+        LOGGER.info("Match to the tweet in the database: %s", match)
 
         #get associated message ids
         ids = []
@@ -244,8 +260,10 @@ class TgStreamer(AsyncStream):
         for id in ids:
             try:
                 await Client.delete_messages(Var.TO_CHAT[0], str(id))
+                LOGGER.info("Deleted one message on the channel: %s", match)
             except Exception as er:
                 LOGGER.exception(er)
+        print('---------------------------------------------------------------------')
 
     async def on_request_error(self, status_code):
         LOGGER.error(f"Stream Encountered HTTP Error: {status_code}")

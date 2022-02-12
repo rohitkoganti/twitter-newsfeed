@@ -6,8 +6,8 @@ class Var:
     API_ID = config("API_ID", '13365810')
     # Telegram's API HASH
     API_HASH = config("API_HASH", 'dc244bc5d3696c478a54f74d666bec20')
-    # Telegram Bot's token
-    BOT_TOKEN = config("BOT_TOKEN", '5048252615:AAG0zqe6jcKeFSNZHwWZWeBdJS10maU0hMs')
+    # Telegram Bot's token - In this case the bot "Twitter Streamer"
+    BOT_TOKEN = config("BOT_TOKEN", '5077846941:AAGbikC6RnuqS1kV7KTmxzX3v1CQmfNvp5M')
 
     # Twitter Vars
     CONSUMER_KEY = config("CONSUMER_KEY", 'KE3EWi6xH3h3644zJwEF4kktZ')
@@ -17,6 +17,7 @@ class Var:
 
     # Telegram Chat id(s), where to send Tweets
     TO_CHAT: str = config("TO_CHAT", '-1001654428545')
+    TO_FAILSAFE_CHAT: str = config("TO_FAILSAFE_CHAT", '-1001670978742')
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
