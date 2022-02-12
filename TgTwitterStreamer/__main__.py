@@ -143,6 +143,7 @@ class TgStreamer(AsyncStream):
         if Var.MUST_EXCLUDE and Var.MUST_EXCLUDE in text:
             return
 
+        # Cleaning the text
         spli = text.split()
         async with aiohttp.ClientSession() as ses:
             for on in spli:
@@ -151,15 +152,21 @@ class TgStreamer(AsyncStream):
                     async with ses.get(link) as out:
                         text = text.replace(link, str(out.url))
 
-        # Twitter Repeats Media Url in Text.
-        # So, Its somewhere necessary to seperate out links.
-        # to Get Pure Text.
-
         for word in text.split():
+            # Twitter Repeats Media Url in Text. So, Its somewhere necessary to seperate out links to Get Pure Text.
             if word.startswith("https://twitter.com"):
                 spli_ = word.split("/")
                 if len(spli_) >= 2 and spli_[-2] in ["photo", "video"]:
                     text = text.replace(word, "")
+
+            # Adding twitter mentions and hashtags in the tweet.
+            if word.startswith("@"):
+                twit_mention = '[' + word + '](https://twitter.com/' +  word.split('@')[1] + ')'
+                text = text.replace(word, twit_mention)
+
+            if word.startswith("#"):
+                hash = '[' + word + '](https://twitter.com/hashtag/' +  word.split('#')[1] + ')'
+                text = text.replace(word, hash)
 
         final_text = Var.CUSTOM_TEXT.format(
             SENDER=user["name"],

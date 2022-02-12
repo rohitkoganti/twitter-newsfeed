@@ -42,7 +42,7 @@ CUSTOM_FORMAT = """
 """
 
 if not Var.CUSTOM_TEXT:
-    Client.parse_mode = "html"
+    Client.parse_mode = "markdown"
     Var.CUSTOM_TEXT = CUSTOM_FORMAT
 
 if Var.LANGUAGES:
