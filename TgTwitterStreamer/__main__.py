@@ -211,7 +211,7 @@ class TgStreamer(AsyncStream):
                 LOGGER.info("Failed to send the tweet as message on main channel, sending the text on backup channel")
                 backup_message = await Client.send_message(
                     int(Var.TO_FAILSAFE_CHAT),
-                    final_text,
+                    final_text + str(er),
                     link_preview = False,
                     buttons = button,
                 )
