@@ -152,21 +152,25 @@ class TgStreamer(AsyncStream):
                     async with ses.get(link) as out:
                         text = text.replace(link, str(out.url))
 
-        for word in text.split():
+        for word in set(text.split()):
             # Twitter Repeats Media Url in Text. So, Its somewhere necessary to seperate out links to Get Pure Text.
             if word.startswith("https://twitter.com"):
                 spli_ = word.split("/")
                 if len(spli_) >= 2 and spli_[-2] in ["photo", "video"]:
                     text = text.replace(word, "")
 
+            # Twitter adds mentions when replying in a thread. Remove mentions manually.
+            if word.startswith("@") and len(word)>1 and text.startswith(word):
+                text = text.split(' ', 1)[1]
+
             # Adding twitter mentions and hashtags in the tweet.
             if word.startswith("@") and len(word)>1:
                 twit_mention = '[' + word + '](https://twitter.com/' +  word.split('@')[1] + ')'
-                text = text.replace(word, twit_mention)
+                text = re.sub(word + r'\b', twit_mention, text)
 
             if word.startswith("#") and len(word)>1:
                 hash = '[' + word + '](https://twitter.com/hashtag/' +  word.split('#')[1] + ')'
-                text = text.replace(word, hash)
+                text = re.sub(word + r'\b', hash, text)
 
         final_text = Var.CUSTOM_TEXT.format(
             SENDER=user["name"],
