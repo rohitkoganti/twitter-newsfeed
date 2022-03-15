@@ -8,7 +8,7 @@ from telethon import TelegramClient
 from tweepy import API, OAuthHandler
 import pymongo
 
-LOGGER = logging.getLogger("TgTwitterStreamer")
+LOGGER = logging.getLogger("NewsfeedStreamer")
 LOGGER.setLevel(level=logging.INFO)
 logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s",
@@ -31,7 +31,7 @@ Twitter = API(auth)
 # Telegram's Client
 # Used for sending messages to Chat.
 Client = TelegramClient(
-    "TgTwitterStreamer", api_id=Var.API_ID, api_hash=Var.API_HASH
+    "NewsfeedStreamer", api_id=Var.API_ID, api_hash=Var.API_HASH
 ).start(bot_token=Var.BOT_TOKEN)
 
 REPO_LINK = "https://github.com/New-dev0/TgTwitterStreamer"
@@ -60,7 +60,7 @@ if Var.TO_CHAT:
         _chats.append(chat)
     Var.TO_CHAT = _chats
 else:
-    LOGGER.info("Please Add 'TO_CHAT' Var to Use TgTwitterStreamer!")
+    LOGGER.info("Please Add 'TO_CHAT' Var to Use NewsfeedStreamer!")
     LOGGER.info(
         "'TO_CHAT' : Fill Telegram Username/Chat ids,"
         + "so that you can get tweets."

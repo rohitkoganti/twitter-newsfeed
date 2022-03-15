@@ -39,7 +39,7 @@ if Var.TRACK_WORDS:
     TRACK_WORDS = Var.TRACK_WORDS.split(" | ")
 
 
-class TgStreamer(AsyncStream):
+class NewsStreamer(AsyncStream):
     async def on_connect(self):
         LOGGER.info("<<<---||| Stream Connected |||--->>>")
 
@@ -324,7 +324,7 @@ if not Var.DISABLE_START:
     )
 
 if __name__ == "__main__":
-    Stream = TgStreamer(
+    Stream = NewsStreamer(
         Var.CONSUMER_KEY, Var.CONSUMER_SECRET,
         Var.ACCESS_TOKEN, Var.ACCESS_TOKEN_SECRET
     )
