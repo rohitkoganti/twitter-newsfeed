@@ -38,7 +38,8 @@ REPO_LINK = "https://github.com/New-dev0/TgTwitterStreamer"
 
 
 CUSTOM_FORMAT = """
-📢 {TWEET_TEXT}
+📢 [{SENDER}]({SENDER_PROFILE}):
+{TWEET_TEXT}
 """
 
 if not Var.CUSTOM_TEXT:
