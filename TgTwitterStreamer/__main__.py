@@ -79,6 +79,12 @@ class TgStreamer(AsyncStream):
         if not Var.TAKE_RETWEETS and tweet.get("retweeted_status"):
             return
 
+        if Var.MUST_INCLUDE and not any(word in tweet["text"] for word in Var.MUST_INCLUDE):
+            return
+
+        if Var.MUST_EXCLUDE and not any(word in tweet["text"] for word in Var.MUST_EXCLUDE):
+            return
+
         # Cache BOT Username
         try:
             bot_username = CACHE_USERNAME[0]
@@ -136,12 +142,6 @@ class TgStreamer(AsyncStream):
         else:
             text = tweet["text"]
         LOGGER.info(text)
-
-        if Var.MUST_INCLUDE and Var.MUST_INCLUDE not in text:
-            return
-
-        if Var.MUST_EXCLUDE and Var.MUST_EXCLUDE in text:
-            return
 
         # Cleaning the text
         spli = text.split()
@@ -212,10 +212,10 @@ class TgStreamer(AsyncStream):
                     LOGGER.info(message2)
             except Exception as er:
                 LOGGER.exception(er)
-                LOGGER.info("Failed to send the tweet as message on main channel, sending the text on backup channel")
+                LOGGER.info("Failed to send the tweet as message on main channel, sending the text without media on same channel")
                 backup_message = await Client.send_message(
-                    int(Var.TO_FAILSAFE_CHAT),
-                    final_text + str(er),
+                    chat,
+                    final_text,
                     link_preview = False,
                     buttons = button,
                 )
@@ -254,12 +254,12 @@ class TgStreamer(AsyncStream):
     async def on_delete(self, status_id, user_id):
         #Search for the tweet with a tweet link that matches the status_id and user_id
         #print(status_id, user_id)
-        sender_url = "https://twitter.com/" + Var.TRACK_USERS.split(" ")[0]
-        TWEET_LINK = f"{sender_url}/status/{status_id}"
-        LOGGER.info("This tweet was deleted: %s", TWEET_LINK)
+        #sender_url = "https://twitter.com/" + str(user_id)
+        #TWEET_LINK = f"{sender_url}/status/{status_id}"
+        LOGGER.info("This tweet was deleted with status_id: %s", str(status_id))
 
         #search for tweet link in db
-        match = mycol.find_one({'tweet_link':TWEET_LINK})
+        match = mycol.find_one({'tweet_link': {'$regex' : str(status_id)}})
         LOGGER.info("Match to the tweet in the database: %s", match)
 
         #get associated message ids
