@@ -254,9 +254,9 @@ class NewsStreamer(AsyncStream):
     async def on_delete(self, status_id, user_id):
         #Search for the tweet with a tweet link that matches the status_id and user_id
         #print(status_id, user_id)
-        #sender_url = "https://twitter.com/" + str(user_id)
-        #TWEET_LINK = f"{sender_url}/status/{status_id}"
-        LOGGER.info("This tweet was deleted with status_id: %s", str(status_id))
+        sender_url = "https://twitter.com/" + str(user_id)
+        TWEET_LINK = f"{sender_url}/status/{status_id}"
+        LOGGER.info("This tweet was deleted with status_id: %s", TWEET_LINK)
 
         #search for tweet link in db
         match = mycol.find_one({'tweet_link': {'$regex' : str(status_id)}})

@@ -20,7 +20,7 @@ class Var:
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
-    TRACK_USERS = config("TRACK_USERS", '@chevilojoreega @the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News')
+    TRACK_USERS = config("TRACK_USERS", '@chevilojoreega @the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News @IndianExpress @ndtv')
     # TRACK_WORDS: To filter Tweets by word
     # Should be seperated by "|"
     TRACK_WORDS = config("TRACK_WORDS", None)
@@ -48,7 +48,7 @@ class Var:
     TAKE_OTHERS_REPLY = config("TAKE_OTHERS_REPLY", default=False, cast=bool)
 
     # An Addition word checking filters.
-    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'passes away', 'passing away', 'passed away', 'Vice President of India', 'Rajya Sabha'])
+    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'passes away', 'passing away', 'passed away', 'died', 'death', 'accident', 'Vice President of India', 'Rajya Sabha'])
     MUST_EXCLUDE = config("MUST_EXCLUDE", default=None)
 
     # Automations
