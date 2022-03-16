@@ -38,7 +38,7 @@ REPO_LINK = "https://github.com/New-dev0/TgTwitterStreamer"
 
 
 CUSTOM_FORMAT = """
-📢 [{SENDER}]({SENDER_PROFILE}):
+🔴 **{SENDER}** ([{SENDER_USERNAME}]({SENDER_PROFILE})):
 {TWEET_TEXT}
 """
 

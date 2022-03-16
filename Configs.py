@@ -16,11 +16,12 @@ class Var:
     ACCESS_TOKEN_SECRET = config("ACCESS_TOKEN_SECRET", 'yexQY5bswpuMsoCv1YqowaksaS2o9r37QlmCklj7ZKIzK')
 
     # Telegram Chat id(s), where to send Tweets
-    TO_CHAT: str = config("TO_CHAT", '-1001799980938')
+    TO_CHAT: str = config("TO_CHAT", '-1001799980938') #'-1001670978742')
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
-    TRACK_USERS = config("TRACK_USERS", '@chevilojoreega @the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News @IndianExpress @ndtv')
+    TRACK_USERS = config("TRACK_USERS", '@the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News @IndianExpress @ndtv @ndtvfeed @airnewsalerts @IndiaTodayFLASH @narendramodi @rashtrapatibhvn @PMOIndia')
+    TRACK_IMP = config("TRACK_IMP", ['narendramodi', 'rashtrapatibhvn', 'PMOIndia'])
     # TRACK_WORDS: To filter Tweets by word
     # Should be seperated by "|"
     TRACK_WORDS = config("TRACK_WORDS", None)
@@ -48,7 +49,7 @@ class Var:
     TAKE_OTHERS_REPLY = config("TAKE_OTHERS_REPLY", default=False, cast=bool)
 
     # An Addition word checking filters.
-    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'passes away', 'passing away', 'passed away', 'died', 'death', 'accident', 'Vice President of India', 'Rajya Sabha'])
+    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'Vice President of India', 'VPSecretariat', 'passes away', 'passing away', 'passed away', 'accident'])
     MUST_EXCLUDE = config("MUST_EXCLUDE", default=None)
 
     # Automations

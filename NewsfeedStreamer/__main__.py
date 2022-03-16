@@ -80,7 +80,10 @@ class NewsStreamer(AsyncStream):
             return
 
         if Var.MUST_INCLUDE and not any(word in tweet["text"] for word in Var.MUST_INCLUDE):
-            return
+            if user["screen_name"] in Var.TRACK_IMP:
+                pass
+            else:
+                return
 
         if Var.MUST_EXCLUDE and not any(word in tweet["text"] for word in Var.MUST_EXCLUDE):
             return
