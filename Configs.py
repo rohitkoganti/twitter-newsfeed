@@ -49,7 +49,7 @@ class Var:
     TAKE_OTHERS_REPLY = config("TAKE_OTHERS_REPLY", default=False, cast=bool)
 
     # An Addition word checking filters.
-    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'Vice President of India', 'VPSecretariat', 'passes away', 'passing away', 'passed away', 'accident'])
+    MUST_INCLUDE = config("MUST_INCLUDE", ['Venkaiah Naidu', 'Vice President of India', 'VPSecretariat', 'passes away', 'passing away', 'passed away', 'accident', 'mishap', 'demise', 'expire' ])
     MUST_EXCLUDE = config("MUST_EXCLUDE", default=None)
 
     # Automations

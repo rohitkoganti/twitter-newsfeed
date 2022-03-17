@@ -79,7 +79,7 @@ class NewsStreamer(AsyncStream):
         if not Var.TAKE_RETWEETS and tweet.get("retweeted_status"):
             return
 
-        if Var.MUST_INCLUDE and not any(word in tweet["text"] for word in Var.MUST_INCLUDE):
+        if Var.MUST_INCLUDE and not any(word.casefold() in tweet["text"].casefold() for word in Var.MUST_INCLUDE):
             if user["screen_name"] in Var.TRACK_IMP:
                 pass
             else:
