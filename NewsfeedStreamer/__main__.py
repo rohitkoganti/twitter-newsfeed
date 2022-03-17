@@ -9,6 +9,7 @@ from telethon.events import NewMessage, CallbackQuery
 from telethon.tl.custom import Button
 from tweepy.asynchronous import AsyncStream
 from tweepy.errors import Unauthorized
+import html
 
 from . import Twitter, Client, REPO_LINK, Var, LOGGER, mycol
 
@@ -154,6 +155,9 @@ class NewsStreamer(AsyncStream):
                     link = "https://t.co/" + on.split("t.co/")[1] #Making sure the link to be decoded is legit
                     async with ses.get(link) as out:
                         text = text.replace(link, str(out.url))
+
+        # Decoding special html characters in the text twitter is sending (encoded) such as &, >, <
+        text = html.unescape(text)
 
         for word in set(text.split()):
             # Twitter Repeats Media Url in Text. So, Its somewhere necessary to seperate out links to Get Pure Text.

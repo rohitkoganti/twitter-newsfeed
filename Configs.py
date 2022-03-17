@@ -17,6 +17,7 @@ class Var:
 
     # Telegram Chat id(s), where to send Tweets
     TO_CHAT: str = config("TO_CHAT", '-1001799980938') #'-1001670978742')
+    #TO_CHAT: str = config("TO_CHAT", '-1001670978742')
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
