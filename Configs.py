@@ -21,7 +21,7 @@ class Var:
 
     # Username of Twitter User, whose Tweets should be tracked
     # and posted to chat filled in TO_CHAT.
-    TRACK_USERS = config("TRACK_USERS", '@the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News @IndianExpress @ndtv @ndtvfeed @airnewsalerts @IndiaTodayFLASH @DeccanHerald @indiacom @narendramodi @rashtrapatibhvn @PMOIndia')
+    TRACK_USERS = config("TRACK_USERS", '@the_hindu @DDNewslive @htTweets @timesofindia @ANI @PTI_News @IndianExpress @ndtv @ndtvfeed @airnewsalerts @IndiaTodayFLASH @DeccanHerald @indiacom @ians_india @narendramodi @rashtrapatibhvn @PMOIndia')
     TRACK_IMP = config("TRACK_IMP", ['narendramodi', 'rashtrapatibhvn', 'PMOIndia'])
     # TRACK_WORDS: To filter Tweets by word
     # Should be seperated by "|"
