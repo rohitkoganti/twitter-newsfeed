@@ -159,7 +159,7 @@ class NewsStreamer(AsyncStream):
         # Decoding special html characters in the text twitter is sending (encoded) such as &, >, <
         text = html.unescape(text)
 
-        for word in set(text.split()):
+        for word in list(dict.fromkeys(text.split()).keys()): #Using this for getting an **ordered** set so as to create mentions and hashes even when they repeat in the tweet.
             # Twitter Repeats Media Url in Text. So, Its somewhere necessary to seperate out links to Get Pure Text.
             if word.startswith("https://twitter.com"):
                 spli_ = word.split("/")
@@ -171,13 +171,17 @@ class NewsStreamer(AsyncStream):
                 text = text.split(' ', 1)[1]
 
             # Adding twitter mentions and hashtags in the tweet.
-            if word.startswith("@") and len(word)>1:
-                twit_mention = '[' + word + '](https://twitter.com/' +  word.split('@')[1] + ')'
-                text = re.sub(word + r'\b', twit_mention, text)
+            mentions = re.search(r'\B@\w\w+', word)
+            if mentions:
+                filter_word = mentions.group(0)
+                replace_link = '[' + filter_word + '](https://twitter.com/' + filter_word[1:] + ')'
+                text = re.sub(filter_word, replace_link, text)
 
-            if word.startswith("#") and len(word)>1:
-                hash = '[' + word + '](https://twitter.com/hashtag/' +  word.split('#')[1] + ')'
-                text = re.sub(word + r'\b', hash, text)
+            hashtag = re.search(r'\B#\w\w+', word)
+            if hashtag:
+                filter_word = hashtag.group(0)
+                replace_link = '[' + filter_word + '](https://twitter.com/hashtag/' + filter_word[1:] + ')'
+                text = re.sub(filter_word, replace_link, text)
 
         final_text = Var.CUSTOM_TEXT.format(
             SENDER=user["name"],
