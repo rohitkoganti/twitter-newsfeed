@@ -175,13 +175,13 @@ class NewsStreamer(AsyncStream):
             if mentions:
                 filter_word = mentions.group(0)
                 replace_link = '[' + filter_word + '](https://twitter.com/' + filter_word[1:] + ')'
-                text = re.sub(filter_word, replace_link, text)
+                text = re.sub(r'\B'+filter_word+r'\b', replace_link, text) #Replace only the relevant word and not others
 
             hashtag = re.search(r'\B#\w\w+', word)
             if hashtag:
                 filter_word = hashtag.group(0)
                 replace_link = '[' + filter_word + '](https://twitter.com/hashtag/' + filter_word[1:] + ')'
-                text = re.sub(filter_word, replace_link, text)
+                text = re.sub(r'\B'+filter_word+r'\b', replace_link, text)
 
         final_text = Var.CUSTOM_TEXT.format(
             SENDER=user["name"],
