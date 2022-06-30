@@ -167,7 +167,7 @@ class NewsStreamer(AsyncStream):
                     text = text.replace(word, "")
 
             # Twitter adds mentions when replying in a thread. Remove mentions manually.
-            if word.startswith("@") and len(word)>1 and text.startswith(word):
+            if word.startswith("@") and len(word)>1 and text.startswith(word) and len(text.split())>1:
                 text = text.split(' ', 1)[1]
 
             # Adding twitter mentions and hashtags in the tweet.
